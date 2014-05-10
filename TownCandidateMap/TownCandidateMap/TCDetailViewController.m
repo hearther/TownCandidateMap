@@ -20,7 +20,7 @@
     NSString *selectedCountyName;
     NSString *selectedTownName;
 }
-@property (nonatomic,strong) NSArray* arOfStates;
+@property (nonatomic,strong) NSMutableArray* polygonOfTowns;
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) MKMapView *mapView;
@@ -70,6 +70,8 @@
     mapView.scrollEnabled = YES;
     mapView.zoomEnabled = YES;
     mapView.delegate = self;
+    
+    self.polygonOfTowns = [[NSMutableArray alloc]init];
     [self _resetMapCenter];
     [self.view addSubview:mapView];
     [self _addToolbarToNavigationbar];
@@ -176,16 +178,17 @@
 
 -(void)showTowns:(NSString*)countyID{
     NSArray* showtowns = county2towns[countyID];
+    [self.polygonOfTowns removeAllObjects];
     
     [showtowns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString*polygonfileName = [NSString stringWithFormat:@"%@_%@",countyID,obj];
-        [self readPolygonInfo:polygonfileName];
-        
-        *stop = YES;
+        [self addPolygonWithFile:polygonfileName];
     }];
+    
+    [self addOverLays];
 }
 
--(void)readPolygonInfo:(NSString*)fileName{
+-(void)addPolygonWithFile:(NSString*)fileName{
     NSString* filepath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"json"];
     NSError *error = nil;
     
@@ -194,30 +197,25 @@
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     
+    //似乎只有用到objects 這個key裡面的資料
 //    NSArray *arcs = dic[@"arcs"];
 //    NSArray * bbox = dic[@"bbox"];
     NSDictionary* objects = dic[@"objects"];
 //    NSDictionary* transform = dic[@"transform"];
 //    NSString* type = dic[@"type"];
     
-    [self addpolygon:objects];
-    
-    NSLog(@"");
-}
-
-
--(void)addpolygon:(NSDictionary*)objects{
-    //find object and add to self.arOfStates
     NSDictionary* layer = objects[@"layer1"];
     NSArray* geometries = layer[@"geometries"];
     
-    NSMutableArray* objectsQQ = [NSMutableArray array];
     //一層一層又一層層
     NSMutableArray *arOfPoints = [NSMutableArray array];
     NSUInteger index = 0;
     
     for (NSDictionary* geoObj in geometries) {
-        if ([geoObj[@"type"] isEqualToString:@"Polygon"]) {
+        if ([NSNull null] == geoObj[@"type"] ) {
+            continue;
+        }
+        else if ([geoObj[@"type"] isEqualToString:@"Polygon"]) {
             NSDictionary* properties = geoObj[@"properties"];
             double X = [properties[@"X"] doubleValue];
             double Y = [properties[@"Y"] doubleValue];
@@ -228,17 +226,14 @@
         }
     }
     
-    [objectsQQ addObject:@{@"points":arOfPoints,
-                           @"name":@"",
-                           @"id":[NSNumber numberWithInt:index++]}];
-    
-    self.arOfStates = objectsQQ;
-    [self addOverLays];
+    [self.polygonOfTowns addObject:@{@"points":arOfPoints,
+                                     @"name":@"",
+                                     @"id":[NSNumber numberWithInt:index++]}];
 }
 
 - (void)addOverLays {
     // for each loop to access each state
-    for (NSDictionary *dState in self.arOfStates) {
+    for (NSDictionary *dState in self.polygonOfTowns) {
         
         // get the points of a specific state
         NSArray *arOfPoints = [dState valueForKey:@"points"];
@@ -295,7 +290,7 @@
         // create a Place object
         Place* home = [[Place alloc] init];
         // assign title
-        home.name = [[self.arOfStates objectAtIndex:index] valueForKey:@"name"];
+        home.name = [[self.polygonOfTowns objectAtIndex:index] valueForKey:@"name"];
         
         // access the location details of polygon
         CLLocationCoordinate2D coOrd = [polyGon coordinate];
