@@ -53,6 +53,7 @@
     mapView.mapType = MKMapTypeStandard;
     mapView.scrollEnabled = YES;
     mapView.zoomEnabled = YES;
+    mapView.delegate = self;
     [self _resetMapCenter];
     [self.view addSubview:mapView];
     
@@ -145,7 +146,36 @@
     NSDictionary* transform = dic[@"transform"];
     NSString* type = dic[@"type"];
     
+    
+    [self addpolygon];
+    
     NSLog(@"");
+}
+
+-(void)addpolygon{
+    CLLocationCoordinate2D libComPark[4];
+    
+    libComPark[0] = CLLocationCoordinate2DMake(33.874689,-98.520148);
+    libComPark[1] = CLLocationCoordinate2DMake(33.87469,-98.519692);
+    libComPark[2] = CLLocationCoordinate2DMake(33.874314,-98.519687);
+    libComPark[3] = CLLocationCoordinate2DMake(33.874316,-98.520146);
+    
+    MKPolygon *polLibcomPark = [MKPolygon polygonWithCoordinates:libComPark count:4];
+    
+    [mapView addOverlay:polLibcomPark];
+}
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+{
+	if ([overlay isKindOfClass:[MKPolygon class]])
+	{
+		MKPolygonView* aView = [[MKPolygonView alloc]initWithPolygon:(MKPolygon*)overlay];
+		aView.fillColor = [[UIColor cyanColor] colorWithAlphaComponent:0.2];
+		aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.7];
+		aView.lineWidth = 3;
+		return aView;
+	}
+	return nil;
 }
 @synthesize mapView;
 @end

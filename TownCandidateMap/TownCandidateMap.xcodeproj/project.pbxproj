@@ -72,6 +72,7 @@
 		5334E8AF191DF3170025E5E1 /* TownCandidateMapTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TownCandidateMapTests.m; sourceTree = "<group>"; };
 		5334E8BC191DF8E80025E5E1 /* TCMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMapAnnotation.h; sourceTree = "<group>"; };
 		5334E8BD191DF8E80025E5E1 /* TCMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMapAnnotation.m; sourceTree = "<group>"; };
+		5A3BDA11191E080D0026E68C /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		5A3D93F9191DFCEA0097E69E /* 63000_63000010.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 63000_63000010.json; sourceTree = "<group>"; };
 		5A3D93FA191DFCEA0097E69E /* 63000_63000020.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 63000_63000020.json; sourceTree = "<group>"; };
 		5A3D93FB191DFCEA0097E69E /* 63000_63000030.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 63000_63000030.json; sourceTree = "<group>"; };
@@ -151,6 +152,7 @@
 				5334E897191DF3170025E5E1 /* TCMasterViewController.m */,
 				5334E899191DF3170025E5E1 /* TCDetailViewController.h */,
 				5334E89A191DF3170025E5E1 /* TCDetailViewController.m */,
+				5A3BDA11191E080D0026E68C /* Location.gpx */,
 				5A3D93F8191DFCEA0097E69E /* use_json */,
 				5334E89C191DF3170025E5E1 /* Images.xcassets */,
 				5334E888191DF3170025E5E1 /* Supporting Files */,
