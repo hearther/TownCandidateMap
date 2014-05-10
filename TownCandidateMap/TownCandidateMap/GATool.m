@@ -52,7 +52,7 @@
 //    double lon = lon0 + (Q5 - Q6 + Q7)/cos(fp);
     double lon = lon0 + RadiansToDegrees((Q5 - Q6 + Q7)/cos(fp));
 
-    NSDictionary*location = @{@"lat":@(lon),@"lng":@(lat)};
+    NSDictionary*location = @{@"lat":@(lat),@"lng":@(lon)};
     return location;
 }
 
