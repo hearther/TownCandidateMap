@@ -14,7 +14,10 @@
     NSDictionary* town2county;
     NSDictionary* county2towns;
     
+    UIButton *locationButton;
     NSUInteger selectedCountyIndex;
+    NSString *selectedCountyName;
+    NSString *selectedTownName;
 }
 @property (nonatomic,strong) NSArray* arOfStates;
 
@@ -22,6 +25,9 @@
 @property (strong, nonatomic) MKMapView *mapView;
 @property (strong, nonatomic) UIPopoverController *popOverController;
 @property (assign, nonatomic) NSUInteger selectedCountyIndex;
+@property (strong, nonatomic) NSString *selectedCountyName;
+@property (strong, nonatomic) NSString *selectedTownName;
+@property (strong, nonatomic) UIButton *locationButton;
 - (void)configureView;
 @end
 
@@ -78,7 +84,7 @@
     [self.view addSubview:toolbar];
 
     CGFloat countyButtonWidth = 100.0;
-    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
     locationButton.frame = CGRectMake(300.0, 1.0, countyButtonWidth, 43.0);
     [locationButton setTitle:@"Location" forState:UIControlStateNormal];
     [locationButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -202,11 +208,15 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if (component == 0) {
-        return counties.allValues[row];
+        NSString *countyName = counties.allValues[row];
+        self.selectedCountyName = countyName;
+        return countyName;
     }
     else if (component == 1) {
         NSString *townKey = county2towns[counties.allKeys[selectedCountyIndex]][row];
-        return towns[townKey];
+        NSString *townName = towns[townKey];
+        self.selectedTownName = townName;
+        return townName;
     }
     
     return @"";
@@ -249,6 +259,9 @@
 
 - (void)pickerViewControllerDidDismiss:(TCPickerViewController *)inViewController
 {
+    NSString *locationString = [NSString stringWithFormat:@"%@ %@", selectedCountyName, selectedTownName];
+    [locationButton setTitle:locationString forState:UIControlStateNormal];
+    [locationButton sizeToFit];
     self.selectedCountyIndex = 0;
     [popOverController dismissPopoverAnimated:YES];
 }
@@ -336,4 +349,7 @@
 @synthesize mapView;
 @synthesize popOverController;
 @synthesize selectedCountyIndex;
+@synthesize selectedCountyName;
+@synthesize selectedTownName;
+@synthesize locationButton;
 @end
