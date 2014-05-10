@@ -28,6 +28,7 @@
 {
     [super viewDidLoad];
     self.detailViewController = (TCDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    self.title = @"Candidates";
 }
 
 - (void)didReceiveMemoryWarning

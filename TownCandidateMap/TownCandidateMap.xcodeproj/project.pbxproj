@@ -22,6 +22,7 @@
 		5334E8A6191DF3170025E5E1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5334E885191DF3170025E5E1 /* UIKit.framework */; };
 		5334E8AE191DF3170025E5E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5334E8AC191DF3170025E5E1 /* InfoPlist.strings */; };
 		5334E8B0191DF3170025E5E1 /* TownCandidateMapTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5334E8AF191DF3170025E5E1 /* TownCandidateMapTests.m */; };
+		5334E8BE191DF8E80025E5E1 /* TCMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5334E8BD191DF8E80025E5E1 /* TCMapAnnotation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		5334E8AB191DF3170025E5E1 /* TownCandidateMapTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TownCandidateMapTests-Info.plist"; sourceTree = "<group>"; };
 		5334E8AD191DF3170025E5E1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5334E8AF191DF3170025E5E1 /* TownCandidateMapTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TownCandidateMapTests.m; sourceTree = "<group>"; };
+		5334E8BC191DF8E80025E5E1 /* TCMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMapAnnotation.h; sourceTree = "<group>"; };
+		5334E8BD191DF8E80025E5E1 /* TCMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMapAnnotation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 				5334E89A191DF3170025E5E1 /* TCDetailViewController.m */,
 				5334E89C191DF3170025E5E1 /* Images.xcassets */,
 				5334E888191DF3170025E5E1 /* Supporting Files */,
+				5334E8BC191DF8E80025E5E1 /* TCMapAnnotation.h */,
+				5334E8BD191DF8E80025E5E1 /* TCMapAnnotation.m */,
 			);
 			path = TownCandidateMap;
 			sourceTree = "<group>";
@@ -256,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5334E89B191DF3170025E5E1 /* TCDetailViewController.m in Sources */,
+				5334E8BE191DF8E80025E5E1 /* TCMapAnnotation.m in Sources */,
 				5334E898191DF3170025E5E1 /* TCMasterViewController.m in Sources */,
 				5334E88E191DF3170025E5E1 /* main.m in Sources */,
 				5334E892191DF3170025E5E1 /* TCAppDelegate.m in Sources */,
@@ -465,6 +471,7 @@
 				5334E8B5191DF3170025E5E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5334E8B6191DF3170025E5E1 /* Build configuration list for PBXNativeTarget "TownCandidateMapTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +480,7 @@
 				5334E8B8191DF3170025E5E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

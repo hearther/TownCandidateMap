@@ -7,9 +7,15 @@
 //
 
 #import "TCDetailViewController.h"
+#import "TCMapAnnotation.h"
 
+@import MapKit;
 @interface TCDetailViewController ()
+{
+    MKMapView *mapView;
+}
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
+@property (strong, nonatomic) MKMapView *mapView;
 - (void)configureView;
 @end
 
@@ -45,6 +51,26 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
+    self.title = @"Map";
+    self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
+    mapView.mapType = MKMapTypeStandard;
+    mapView.scrollEnabled = YES;
+    mapView.zoomEnabled = YES;
+    [self _resetMapCenter];
+    [self.view addSubview:mapView];
+}
+
+- (void)_resetMapCenter
+{
+#warning test data
+    //25.040205, 121.512812
+
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(25.040205, 121.512812);
+	mapView.region = MKCoordinateRegionMakeWithDistance(location, 1000 * 2, 1000 * 2);
+	mapView.centerCoordinate = location;
+    
+    TCMapAnnotation *annotation = [[TCMapAnnotation alloc] initWithCoordinate:location title:@"testTitle" subtitle:@"testSubleTitle"];
+    [mapView addAnnotation:annotation];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,4 +95,5 @@
     self.masterPopoverController = nil;
 }
 
+@synthesize mapView;
 @end
