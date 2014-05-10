@@ -1,10 +1,12 @@
 #import "TCDetailViewController.h"
 #import "TCMapAnnotation.h"
+#import "TCPickerViewController.h"
 
 @import MapKit;
 @interface TCDetailViewController ()
 {
     MKMapView *mapView;
+    UIPopoverController *popOverController;
     
     NSDictionary* counties;
     NSDictionary* towns;
@@ -13,6 +15,7 @@
 }
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) MKMapView *mapView;
+@property (strong, nonatomic) UIPopoverController *popOverController;
 - (void)configureView;
 @end
 
@@ -55,8 +58,43 @@
     mapView.zoomEnabled = YES;
     [self _resetMapCenter];
     [self.view addSubview:mapView];
-    
+    [self _addToolbarToNavigationbar];
     [self readTownConunty];
+}
+
+- (void)_addToolbarToNavigationbar
+{
+    CGFloat toolbarHeight = 44.0;
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 64.0, CGRectGetWidth(self.view.frame), toolbarHeight)];
+    toolbar.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:toolbar];
+
+    CGFloat countyButtonWidth = 100.0;
+    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    locationButton.frame = CGRectMake(300.0, 1.0, countyButtonWidth, 43.0);
+    [locationButton setTitle:@"Location" forState:UIControlStateNormal];
+    [locationButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    locationButton.backgroundColor = [UIColor whiteColor];
+    [locationButton.layer setMasksToBounds:YES];
+    [locationButton.layer setCornerRadius:10.0f];
+    [locationButton.layer setBackgroundColor:[UIColor whiteColor].CGColor];
+    locationButton.layer.borderColor = [UIColor greenColor].CGColor;
+    locationButton.layer.borderWidth = 1.0;
+    [locationButton addTarget:self action:@selector(_locationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [toolbar addSubview:locationButton];
+}
+
+
+- (void)_locationButtonClicked:(id)sender
+{
+    UIButton* button = (UIButton*)sender;
+    
+    TCPickerViewController *pickerViewController = [[TCPickerViewController alloc] init];
+    
+    self.popOverController = [[UIPopoverController alloc] initWithContentViewController:pickerViewController];
+    popOverController.popoverContentSize = CGSizeMake(320.0, 500.0);
+    [popOverController presentPopoverFromRect:button.bounds inView:button permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 }
 
 - (void)_resetMapCenter
@@ -148,4 +186,5 @@
     NSLog(@"");
 }
 @synthesize mapView;
+@synthesize popOverController;
 @end
