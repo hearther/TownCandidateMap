@@ -233,7 +233,7 @@
     if (component == 0) {
         self.selectedCountyIndex = row;
         TCPickerViewController *pickerViewController = (TCPickerViewController *)popOverController.contentViewController;
-        [pickerViewController.pickerView reloadComponent:1];
+        [pickerViewController.pickerView reloadAllComponents];
     }
 }
 
