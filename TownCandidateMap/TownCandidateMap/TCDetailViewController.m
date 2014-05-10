@@ -1,11 +1,3 @@
-//
-//  TCDetailViewController.m
-//  TownCandidateMap
-//
-//  Created by joehsieh on 5/10/14.
-//  Copyright (c) 2014 TC. All rights reserved.
-//
-
 #import "TCDetailViewController.h"
 #import "TCMapAnnotation.h"
 
@@ -13,6 +5,11 @@
 @interface TCDetailViewController ()
 {
     MKMapView *mapView;
+    
+    NSDictionary* counties;
+    NSDictionary* towns;
+    NSDictionary* town2county;
+    NSDictionary* county2towns;
 }
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) MKMapView *mapView;
@@ -58,6 +55,8 @@
     mapView.zoomEnabled = YES;
     [self _resetMapCenter];
     [self.view addSubview:mapView];
+    
+    [self readTownConunty];
 }
 
 - (void)_resetMapCenter
@@ -94,6 +93,27 @@
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
 }
-
+-(void)readTownConunty{
+    NSString* filepath = [[NSBundle mainBundle] pathForResource:@"list" ofType:@"json"];
+    NSError *error = nil;
+    
+    NSString* jsonString = [NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error];
+    
+    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    
+    if (error != nil) {
+        NSLog(@"Error parsing JSON.");
+    }
+    else {
+        counties = [[NSDictionary alloc]initWithDictionary:dic[@"counties"]];
+        towns = [[NSDictionary alloc]initWithDictionary:dic[@"towns"]];
+        town2county = [[NSDictionary alloc]initWithDictionary:dic[@"town2county"]];
+        county2towns = [[NSDictionary alloc]initWithDictionary:dic[@"county2towns"]];
+        
+        NSLog(@"%d %d %d %d",[counties count],[towns count], [town2county count], [county2towns count]);
+        NSLog(@"%@",[counties valueForKey:@"10008"]);
+    }
+}
 @synthesize mapView;
 @end
