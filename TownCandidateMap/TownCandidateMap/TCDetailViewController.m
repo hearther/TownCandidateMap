@@ -67,6 +67,7 @@
 {
 #warning test data
     //25.040205, 121.512812
+    //    lat = "0.4361032193958104";  lng = "121.0095478850263";
 
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake(25.040205, 121.512812);
 	mapView.region = MKCoordinateRegionMakeWithDistance(location, 1000 * 2, 1000 * 2);
@@ -156,7 +157,25 @@
 
 -(void)addpolygon:(NSDictionary*)objects{
     //find object and add to self.arOfStates
+    NSDictionary* layer = objects[@"layer1"];
+    NSArray* geometries = layer[@"geometries"];
     
+    NSMutableArray* objectsQQ = [NSMutableArray array];
+    //一層一層又一層層
+    
+    for (NSDictionary* geoObj in geometries) {
+        if ([geoObj[@"type"] isEqualToString:@"Polygon"]) {
+            NSDictionary* properties = geoObj[@"properties"];
+            double X = [properties[@"X"] doubleValue];
+            double Y = [properties[@"Y"] doubleValue];
+            NSDictionary* loaction = [GATool TWD97TM2toWGS84:X :Y];
+//            NSLog(@"TW97 :%f,%f",X,Y);
+//            NSLog(@"WS794:%f,%f",[loaction[@"lat"] doubleValue],[loaction[@"lng"] doubleValue]);
+            [objectsQQ addObject:loaction];
+        }
+    }
+    
+    self.arOfStates = objectsQQ;
     [self addOverLays];
 }
 

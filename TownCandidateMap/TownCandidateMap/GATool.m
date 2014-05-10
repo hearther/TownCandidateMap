@@ -2,7 +2,7 @@
 #import <math.h>
 
 @implementation GATool
-+(CLLocationCoordinate2D) TWD97TM2toWGS84:(double )x :(double)y{
++(NSDictionary*) TWD97TM2toWGS84:(double )x :(double)y{
     double dx = 250000;
     double dy = 0;
     double lon0 = 121;
@@ -44,16 +44,26 @@
     double Q2 = (pow(D, 2)/2.0);
     double Q3 = (5 + 3*T1 + 10*C1 - 4*pow(C1, 2) - 9*e2)*pow(D, 4)/24.0;
     double Q4 = (61 + 90*T1 + 298*C1 + 45*pow(T1, 2) - 3*pow(C1, 2) - 252*e2)*pow(D, 6)/720.0;
-    double lat = fp - Q1*(Q2 - Q3 + Q4);
-//    double lat = Math.toDegrees(fp - Q1*(Q2 - Q3 + Q4));
-    
+    double lat = RadiansToDegrees(fp - Q1*(Q2 - Q3 + Q4));
     // long
     double Q5 = D;
     double Q6 = (1 + 2*T1 + C1)*pow(D, 3)/6.0;
     double Q7 = (5 - 2*C1 + 28*T1 - 3*pow(C1, 2) + 8*pow(e2,2) + 24*pow(T1, 2))*pow(D, 5)/120.0;
-    double lon = lon0 + (Q5 - Q6 + Q7)/cos(fp);
-//    double lon = lon0 + Math.toDegrees((Q5 - Q6 + Q7)/Math.cos(fp));
-    
-    return CLLocationCoordinate2DMake(lat, lon);
+//    double lon = lon0 + (Q5 - Q6 + Q7)/cos(fp);
+    double lon = lon0 + RadiansToDegrees((Q5 - Q6 + Q7)/cos(fp));
+
+    NSDictionary*location = @{@"lat":@(lon),@"lng":@(lat)};
+    return location;
 }
+
+double DegreesToRadians(double degrees)
+{
+    return degrees * M_PI / 180;
+};
+
+double RadiansToDegrees(double radians)
+{
+    return radians * 180 / M_PI;
+};
+
 @end

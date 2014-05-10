@@ -10,5 +10,5 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface GATool : NSObject
-+(CLLocationCoordinate2D) TWD97TM2toWGS84:(double )x :(double)y;
++(NSDictionary*) TWD97TM2toWGS84:(double )x :(double)y;
 @end
