@@ -93,6 +93,7 @@
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
 }
+#pragma -mark
 -(void)readTownConunty{
     NSString* filepath = [[NSBundle mainBundle] pathForResource:@"list" ofType:@"json"];
     NSError *error = nil;
@@ -111,9 +112,40 @@
         town2county = [[NSDictionary alloc]initWithDictionary:dic[@"town2county"]];
         county2towns = [[NSDictionary alloc]initWithDictionary:dic[@"county2towns"]];
         
-        NSLog(@"%d %d %d %d",[counties count],[towns count], [town2county count], [county2towns count]);
-        NSLog(@"%@",[counties valueForKey:@"10008"]);
+        //        NSLog(@"%d %d %d %d",[counties count],[towns count], [town2county count], [county2towns count]);
+        //        NSLog(@"%@",[counties valueForKey:@"63000"]);
+        
+        [self showTowns:@"63000"];
     }
+}
+
+-(void)showTowns:(NSString*)countyID{
+    NSArray* showtowns = county2towns[countyID];
+    
+    [showtowns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString*polygonfileName = [NSString stringWithFormat:@"%@_%@",countyID,obj];
+        [self readPolygonInfo:polygonfileName];
+        
+        *stop = YES;
+    }];
+}
+
+-(void)readPolygonInfo:(NSString*)fileName{
+    NSString* filepath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"json"];
+    NSError *error = nil;
+    
+    NSString* jsonString = [NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error];
+    
+    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    
+    NSArray *arcs = dic[@"arcs"];
+    NSArray * bbox = dic[@"bbox"];
+    NSDictionary* objects = dic[@"objects"];
+    NSDictionary* transform = dic[@"transform"];
+    NSString* type = dic[@"type"];
+    
+    NSLog(@"");
 }
 @synthesize mapView;
 @end
