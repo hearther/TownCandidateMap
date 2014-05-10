@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TCPickerViewController.h"
 
-@interface TCDetailViewController : UIViewController <UISplitViewControllerDelegate>
+@interface TCDetailViewController : UIViewController <UISplitViewControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, TCPickerViewControllerDelegate>
 
 @property (strong, nonatomic) id detailItem;
 

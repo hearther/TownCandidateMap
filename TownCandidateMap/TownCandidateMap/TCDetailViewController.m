@@ -12,10 +12,13 @@
     NSDictionary* towns;
     NSDictionary* town2county;
     NSDictionary* county2towns;
+    
+    NSUInteger selectedCountyIndex;
 }
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) MKMapView *mapView;
 @property (strong, nonatomic) UIPopoverController *popOverController;
+@property (assign, nonatomic) NSUInteger selectedCountyIndex;
 - (void)configureView;
 @end
 
@@ -79,7 +82,7 @@
     [locationButton.layer setMasksToBounds:YES];
     [locationButton.layer setCornerRadius:10.0f];
     [locationButton.layer setBackgroundColor:[UIColor whiteColor].CGColor];
-    locationButton.layer.borderColor = [UIColor greenColor].CGColor;
+    locationButton.layer.borderColor = [UIColor blueColor].CGColor;
     locationButton.layer.borderWidth = 1.0;
     [locationButton addTarget:self action:@selector(_locationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [toolbar addSubview:locationButton];
@@ -91,9 +94,11 @@
     UIButton* button = (UIButton*)sender;
     
     TCPickerViewController *pickerViewController = [[TCPickerViewController alloc] init];
-    
+    pickerViewController.pickerViewDelegate = self;
+    pickerViewController.pickerViewDatasource = self;
+    pickerViewController.pickerViewControllerDelegate = self;
     self.popOverController = [[UIPopoverController alloc] initWithContentViewController:pickerViewController];
-    popOverController.popoverContentSize = CGSizeMake(320.0, 500.0);
+    popOverController.popoverContentSize = CGSizeMake(320.0, 300.0);
     [popOverController presentPopoverFromRect:button.bounds inView:button permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 }
 
@@ -185,6 +190,63 @@
     
     NSLog(@"");
 }
+
+#pragma mark - UIPickerViewDelegate
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (component == 0) {
+        return counties.allValues[row];
+    }
+    else if (component == 1) {
+        NSString *townKey = county2towns[counties.allKeys[selectedCountyIndex]][row];
+        return towns[townKey];
+    }
+    
+    return @"";
+}
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    int sectionWidth = 160.0;
+    
+    return sectionWidth;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == 0) {
+        self.selectedCountyIndex = row;
+        TCPickerViewController *pickerViewController = (TCPickerViewController *)popOverController.contentViewController;
+        [pickerViewController.pickerView reloadComponent:1];
+    }
+}
+
+
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 2;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (component == 0) {
+        return [counties.allValues count];
+    }
+    else if (component == 1) {
+        return [county2towns[counties.allKeys[selectedCountyIndex]] count];
+    }
+    
+    return 0;
+}
+
+#pragma mark - TCPickerViewControllerDelegate
+
+- (void)pickerViewControllerDidDismiss:(TCPickerViewController *)inViewController
+{
+    self.selectedCountyIndex = 0;
+    [popOverController dismissPopoverAnimated:YES];
+}
+
 @synthesize mapView;
 @synthesize popOverController;
+@synthesize selectedCountyIndex;
 @end

@@ -18,16 +18,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-    pickerView.delegate = self;
-    pickerView.dataSource = self;
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(_doneButtonClicked:)];
+    
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    toolbar.items = @[spaceItem, doneButton];
+    [self.view addSubview:toolbar];
+    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 44.0, 320, 300)];
+    pickerView.delegate = self.pickerViewDelegate;
+    pickerView.dataSource = self.pickerViewDatasource;
     pickerView.showsSelectionIndicator = YES;
     [self.view addSubview:pickerView];
 }
 
 - (void)_doneButtonClicked:(id)sender
 {
-    
+    if (pickerViewControllerDelegate && [pickerViewControllerDelegate respondsToSelector:@selector(pickerViewControllerDidDismiss:)]) {
+        [pickerViewControllerDelegate pickerViewControllerDidDismiss:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -36,35 +44,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - UIPickerViewDelegate
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSString *title;
-    title = [@"" stringByAppendingFormat:@"%d",row];
-    
-    return title;
-}
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    int sectionWidth = 160.0;
-    
-    return sectionWidth;
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
-}
-
-
-#pragma mark - UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 2;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    NSUInteger numRows = 5;
-    
-    return numRows;
-}
-
+@synthesize pickerView;
+@synthesize pickerViewDelegate;
+@synthesize pickerViewDatasource;
+@synthesize pickerViewControllerDelegate;
 @end
