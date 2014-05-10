@@ -1,15 +1,9 @@
-//
-//  TCDetailViewController.h
-//  TownCandidateMap
-//
-//  Created by joehsieh on 5/10/14.
-//  Copyright (c) 2014 TC. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "TCPickerViewController.h"
 
-@interface TCDetailViewController : UIViewController <UISplitViewControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, TCPickerViewControllerDelegate>
+@interface TCDetailViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate, UISplitViewControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, TCPickerViewControllerDelegate>
 
 @property (strong, nonatomic) id detailItem;
 
