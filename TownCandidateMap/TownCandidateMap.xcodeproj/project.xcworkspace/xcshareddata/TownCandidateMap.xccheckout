@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7687E26A-446D-4C63-B2DE-AA9335D47F21</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TownCandidateMap</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B074B951-0940-46A1-B3EE-AD67A88AEFA5</key>
+		<string>ssh://github.com/Hokila/TownCandidateMap.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TownCandidateMap/TownCandidateMap.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B074B951-0940-46A1-B3EE-AD67A88AEFA5</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/Hokila/TownCandidateMap.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B074B951-0940-46A1-B3EE-AD67A88AEFA5</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B074B951-0940-46A1-B3EE-AD67A88AEFA5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TownCandidateMap1</string>
+		</dict>
+	</array>
+</dict>
+</plist>
