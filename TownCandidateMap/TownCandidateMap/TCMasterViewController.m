@@ -7,12 +7,14 @@
 //
 
 #import "TCMasterViewController.h"
-
 #import "TCDetailViewController.h"
+#import "TCCandidateViewController.h"
 
 @interface TCMasterViewController () {
     NSMutableArray *_objects;
+    TCCandidateViewController *selectedCandidateViewController;
 }
+@property (nonatomic, strong) TCCandidateViewController *selectedCandidateViewController;
 @end
 
 @implementation TCMasterViewController
@@ -29,22 +31,20 @@
     [super viewDidLoad];
     self.detailViewController = (TCDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     self.title = @"Candidates";
+    
+    if (!_objects) {
+        _objects = [[NSMutableArray alloc] init];
+    }
+#warning test data
+    [_objects addObjectsFromArray:@[@{@"name" : @"吳育昇", @"grade" : @"這不好說",  @"politicalParty": @"果民黨"},
+                                   @{@"name" : @"錢薇娟", @"grade" : @"籃球很強",   @"politicalParty": @"果民黨"}
+                                    ]];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)insertNewObject:(id)sender
-{
-    if (!_objects) {
-        _objects = [[NSMutableArray alloc] init];
-    }
-    [_objects insertObject:[NSDate date] atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table View
@@ -63,8 +63,8 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    NSDictionary *dictionary = _objects[indexPath.row];
+    cell.textLabel.text = dictionary[@"name"];
     return cell;
 }
 
@@ -102,8 +102,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *object = _objects[indexPath.row];
-    self.detailViewController.detailItem = object;
+    NSDictionary *dictionary = _objects[indexPath.row];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([self.detailViewController.navigationController topViewController] == selectedCandidateViewController) {
+        selectedCandidateViewController.candidateDictionary = dictionary;
+        [selectedCandidateViewController reloadData];
+        return;
+    }
+    self.selectedCandidateViewController = [[TCCandidateViewController alloc] initWithCandidateDictionary:dictionary];
+    [self.detailViewController.navigationController pushViewController:selectedCandidateViewController animated:YES];
 }
 
+@synthesize selectedCandidateViewController;
 @end
