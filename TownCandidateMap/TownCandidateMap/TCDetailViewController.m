@@ -2,6 +2,7 @@
 #import "TCMapAnnotation.h"
 #import "TCPickerViewController.h"
 #import "GATool.h"
+#import "PlaceMark.h"
 
 @import MapKit;
 @interface TCDetailViewController ()
@@ -262,13 +263,8 @@
         [self.mapView addOverlay:polygon];
     }
     // add annotations on map after some delay
-    //    [self performSelector:@selector(addAnnotationsOnMap) withObject:nil afterDelay:3];
+    [self performSelector:@selector(addAnnotationsOnMap) withObject:nil afterDelay:3];
 }
-
-
-
-
-
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
@@ -289,6 +285,69 @@
     
     return polygonView;
 }
+
+- (void)addAnnotationsOnMap {
+    // foreach loop, which will access all polygons_overlay added over the mapView
+    for (MKPolygon *polyGon in self.mapView.overlays) {
+        // access the index - go to line number 102 to understand the index
+        NSUInteger index = [[polyGon title] intValue];
+        
+        // create a Place object
+        Place* home = [[Place alloc] init];
+        // assign title
+        home.name = [[self.arOfStates objectAtIndex:index] valueForKey:@"name"];
+        
+        // access the location details of polygon
+        CLLocationCoordinate2D coOrd = [polyGon coordinate];
+        
+        // add description if any
+        //        home.description=[d valueForKey:@"address"];
+        
+        // set the location details to HOME object
+        home.latitude = coOrd.latitude;
+        home.longitude = coOrd.longitude;
+        
+        // based on homeObject create, placeMark object (annotation)
+        PlaceMark* from = [[PlaceMark alloc] initWithPlace:home];
+        
+        // add anotation to map
+        [self.mapView addAnnotation:from];
+    }
+}
+
+// setting up the google pin
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    // static identifier for map-pin for re-usablility
+    static NSString * const kPinAnnotationIdentifier2 = @"PinIdentifierOtherPins";
+    MKPinAnnotationView *pin = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier: kPinAnnotationIdentifier2];
+    
+    // if pin is not dequeued
+    if(!pin) {
+        // create a new pin
+        pin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kPinAnnotationIdentifier2];
+        pin.userInteractionEnabled = YES;
+        // create a button
+        UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        [disclosureButton setFrame:CGRectMake(0, 0, 30, 30)];
+        
+        // set button as callOut accessory
+        pin.rightCalloutAccessoryView = disclosureButton;
+        
+        // set annotation color
+        pin.pinColor = MKPinAnnotationColorGreen;
+        
+        // set animation for drop on.
+        pin.animatesDrop = YES;
+        
+        // set enabled yes - to access it.
+        [pin setEnabled:YES];
+        
+        // set canShowCallout yes - which will open pop-up as given in the screen-shot.
+        [pin setCanShowCallout:YES];
+    }
+    return pin;
+}
+
 
 #pragma mark - UIPickerViewDelegate
 
