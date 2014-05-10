@@ -36,6 +36,7 @@
 		5A3D9410191DFCEA0097E69E /* 63000_63000110.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A3D9403191DFCEA0097E69E /* 63000_63000110.json */; };
 		5A3D9411191DFCEA0097E69E /* 63000_63000120.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A3D9404191DFCEA0097E69E /* 63000_63000120.json */; };
 		5A3D9412191DFCEA0097E69E /* list.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A3D9405191DFCEA0097E69E /* list.json */; };
+		5A86E411191E140200E7A3C3 /* GATool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A86E410191E140200E7A3C3 /* GATool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,8 @@
 		5A3D9403191DFCEA0097E69E /* 63000_63000110.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 63000_63000110.json; sourceTree = "<group>"; };
 		5A3D9404191DFCEA0097E69E /* 63000_63000120.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 63000_63000120.json; sourceTree = "<group>"; };
 		5A3D9405191DFCEA0097E69E /* list.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = list.json; sourceTree = "<group>"; };
+		5A86E40F191E140200E7A3C3 /* GATool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GATool.h; sourceTree = "<group>"; };
+		5A86E410191E140200E7A3C3 /* GATool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GATool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +155,8 @@
 				5334E897191DF3170025E5E1 /* TCMasterViewController.m */,
 				5334E899191DF3170025E5E1 /* TCDetailViewController.h */,
 				5334E89A191DF3170025E5E1 /* TCDetailViewController.m */,
+				5A86E40F191E140200E7A3C3 /* GATool.h */,
+				5A86E410191E140200E7A3C3 /* GATool.m */,
 				5A3BDA11191E080D0026E68C /* Location.gpx */,
 				5A3D93F8191DFCEA0097E69E /* use_json */,
 				5334E89C191DF3170025E5E1 /* Images.xcassets */,
@@ -327,6 +332,7 @@
 				5334E898191DF3170025E5E1 /* TCMasterViewController.m in Sources */,
 				5334E88E191DF3170025E5E1 /* main.m in Sources */,
 				5334E892191DF3170025E5E1 /* TCAppDelegate.m in Sources */,
+				5A86E411191E140200E7A3C3 /* GATool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

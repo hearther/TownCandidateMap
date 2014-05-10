@@ -1,5 +1,6 @@
 #import "TCDetailViewController.h"
 #import "TCMapAnnotation.h"
+#import "GATool.h"
 
 @import MapKit;
 @interface TCDetailViewController ()
@@ -11,6 +12,8 @@
     NSDictionary* town2county;
     NSDictionary* county2towns;
 }
+@property (nonatomic,strong) NSArray* arOfStates;
+
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) MKMapView *mapView;
 - (void)configureView;
@@ -140,42 +143,76 @@
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     
-    NSArray *arcs = dic[@"arcs"];
-    NSArray * bbox = dic[@"bbox"];
+//    NSArray *arcs = dic[@"arcs"];
+//    NSArray * bbox = dic[@"bbox"];
     NSDictionary* objects = dic[@"objects"];
-    NSDictionary* transform = dic[@"transform"];
-    NSString* type = dic[@"type"];
+//    NSDictionary* transform = dic[@"transform"];
+//    NSString* type = dic[@"type"];
     
-    
-    [self addpolygon];
+    [self addpolygon:objects];
     
     NSLog(@"");
 }
 
--(void)addpolygon{
-    CLLocationCoordinate2D libComPark[4];
+-(void)addpolygon:(NSDictionary*)objects{
+    //find object and add to self.arOfStates
     
-    libComPark[0] = CLLocationCoordinate2DMake(33.874689,-98.520148);
-    libComPark[1] = CLLocationCoordinate2DMake(33.87469,-98.519692);
-    libComPark[2] = CLLocationCoordinate2DMake(33.874314,-98.519687);
-    libComPark[3] = CLLocationCoordinate2DMake(33.874316,-98.520146);
-    
-    MKPolygon *polLibcomPark = [MKPolygon polygonWithCoordinates:libComPark count:4];
-    
-    [mapView addOverlay:polLibcomPark];
+    [self addOverLays];
 }
+
+- (void)addOverLays {
+    // for each loop to access each state
+    for (NSDictionary *dState in self.arOfStates) {
+        
+        // get the points of a specific state
+        NSArray *arOfPoints = [dState valueForKey:@"points"];
+        
+        // alloc all co-ordinates at once. mandatory
+        CLLocationCoordinate2D *pointsCoOrds = (CLLocationCoordinate2D*)malloc(sizeof(CLLocationCoordinate2D) * [arOfPoints count]);
+        NSUInteger index = 0;
+        
+        // for each loop to access all points of specific state
+        for (NSDictionary *dPoint in [dState valueForKey:@"points"]) {
+            CGFloat lat = [[dPoint valueForKey:@"lat"] floatValue];
+            CGFloat lng = [[dPoint valueForKey:@"lng"] floatValue];
+            // set the location details to appropriate index of array of Co-ordinates
+            pointsCoOrds[index++] = CLLocationCoordinate2DMake(lat,lng);
+        }
+        
+        // create a polygon based on the array of co-ordinates
+        MKPolygon *polygon =[MKPolygon polygonWithCoordinates:pointsCoOrds count:[arOfPoints count]];
+        
+        // assigning the index of array to polygon object - which can be helpful for next methods
+        [polygon setTitle:[[dState valueForKey:@"id"] stringValue]];
+        [self.mapView addOverlay:polygon];
+    }
+    // add annotations on map after some delay
+//    [self performSelector:@selector(addAnnotationsOnMap) withObject:nil afterDelay:3];
+}
+
+
+
+
+
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
-	if ([overlay isKindOfClass:[MKPolygon class]])
-	{
-		MKPolygonView* aView = [[MKPolygonView alloc]initWithPolygon:(MKPolygon*)overlay];
-		aView.fillColor = [[UIColor cyanColor] colorWithAlphaComponent:0.2];
-		aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.7];
-		aView.lineWidth = 3;
-		return aView;
-	}
-	return nil;
+    // create a polygonView using polygon_overlay object
+    MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:overlay];
+    
+    // applying line-width
+    polygonView.lineWidth = 1.5;
+    
+    // a code to create generate random number, which will be helpful to generate random color
+    int color = arc4random()%3;
+    UIColor *colorValue = (color==0)?[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1] : (
+                                                                                              (color==1)? [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:1] : [UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:1] );
+    
+    // apply stroke &amp; fill color
+    polygonView.strokeColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1];
+    polygonView.fillColor = colorValue;
+    
+    return polygonView;
 }
 @synthesize mapView;
 @end

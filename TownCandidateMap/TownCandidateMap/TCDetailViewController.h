@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface TCDetailViewController : UIViewController <UISplitViewControllerDelegate,MKMapViewDelegate>
+@interface TCDetailViewController : UIViewController <UISplitViewControllerDelegate,MKMapViewDelegate,CLLocationManagerDelegate>
 
 @property (strong, nonatomic) id detailItem;
 
