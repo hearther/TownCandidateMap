@@ -16,16 +16,12 @@
     NSDictionary* county2towns;
     
     UIButton *locationButton;
-    NSUInteger selectedCountyIndex;
-    NSString *selectedCountyName;
-    NSString *selectedTownName;
 }
 @property (nonatomic,strong) NSMutableArray* polygonOfTowns;
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) MKMapView *mapView;
 @property (strong, nonatomic) UIPopoverController *popOverController;
-@property (assign, nonatomic) NSUInteger selectedCountyIndex;
 @property (strong, nonatomic) NSString *selectedCountyName;
 @property (strong, nonatomic) NSString *selectedTownName;
 @property (strong, nonatomic) UIButton *locationButton;
@@ -352,15 +348,12 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if (component == 0) {
-        NSString *countyName = counties.allValues[row];
-        self.selectedCountyName = countyName;
-        return countyName;
+        return counties.allValues[row];;
     }
     else if (component == 1) {
+        NSUInteger selectedCountyIndex = [pickerView selectedRowInComponent:0];
         NSString *townKey = county2towns[counties.allKeys[selectedCountyIndex]][row];
-        NSString *townName = towns[townKey];
-        self.selectedTownName = townName;
-        return townName;
+        return towns[townKey];
     }
     
     return @"";
@@ -375,7 +368,6 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component
 {
     if (component == 0) {
-        self.selectedCountyIndex = row;
         TCPickerViewController *pickerViewController = (TCPickerViewController *)popOverController.contentViewController;
         [pickerViewController.pickerView reloadAllComponents];
     }
@@ -393,6 +385,7 @@
         return [counties.allValues count];
     }
     else if (component == 1) {
+        NSUInteger selectedCountyIndex = [pickerView selectedRowInComponent:0];
         return [county2towns[counties.allKeys[selectedCountyIndex]] count];
     }
     
@@ -403,18 +396,22 @@
 
 - (void)pickerViewControllerDidDismiss:(TCPickerViewController *)inViewController
 {
+    NSUInteger selectedCountyIndex = [inViewController.pickerView selectedRowInComponent:0];
+    
+    NSUInteger selectedTownIndex = [inViewController.pickerView selectedRowInComponent:1];
+    
+    NSString *townKey = county2towns[counties.allKeys[selectedCountyIndex]][selectedTownIndex];
+    NSString *selectedCountyName = counties.allValues[selectedCountyIndex];
+    NSString *selectedTownName = towns[townKey];
+    
     NSString *locationString = [NSString stringWithFormat:@"%@ %@", selectedCountyName, selectedTownName];
     [locationButton setTitle:locationString forState:UIControlStateNormal];
     [locationButton sizeToFit];
-    self.selectedCountyIndex = 0;
     [popOverController dismissPopoverAnimated:YES];
 }
 
 
 @synthesize mapView;
 @synthesize popOverController;
-@synthesize selectedCountyIndex;
-@synthesize selectedCountyName;
-@synthesize selectedTownName;
 @synthesize locationButton;
 @end
