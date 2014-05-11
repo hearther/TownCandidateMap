@@ -10,7 +10,6 @@
     double a =  6378137.0;
     double b = 6356752.314245;
     double e = sqrt((1-(b*b)/(a*a)));
-//    double e = Math.sqrt((1-(b*b)/(a*a)));
     
     x -= dx;
     y -= dy;
@@ -37,8 +36,7 @@
     double N1 = a/pow((1-pow(e, 2)*pow(sin(fp), 2)), 0.5);
     
     double D = x/(N1*k0);
-    //double drad = Math.PI/180.0;
-    
+
     // lat
     double Q1 = N1*tan(fp)/R1;
     double Q2 = (pow(D, 2)/2.0);
@@ -49,7 +47,7 @@
     double Q5 = D;
     double Q6 = (1 + 2*T1 + C1)*pow(D, 3)/6.0;
     double Q7 = (5 - 2*C1 + 28*T1 - 3*pow(C1, 2) + 8*pow(e2,2) + 24*pow(T1, 2))*pow(D, 5)/120.0;
-//    double lon = lon0 + (Q5 - Q6 + Q7)/cos(fp);
+
     double lon = lon0 + RadiansToDegrees((Q5 - Q6 + Q7)/cos(fp));
 
     NSDictionary*location = @{@"lat":@(lat),@"lng":@(lon)};

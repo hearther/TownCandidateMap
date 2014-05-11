@@ -1,14 +1,12 @@
-//
-//  GATool.h
-//  whatthejoesay
-//
-//  Created by Hokila on 2014/5/10.
-//  Copyright (c) 2014年 Hokila. All rights reserved.
-//
-
-#import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
+@import Foundation;
+@import CoreLocation;
 
 @interface GATool : NSObject
+
+/*
+ convert TW97 to WGS84
+ reference from http://napmas.blogspot.tw/2011/05/umt-twd97tm2-wgs84.html
+ */
 +(NSDictionary*) TWD97TM2toWGS84:(double )x :(double)y;
+
 @end
