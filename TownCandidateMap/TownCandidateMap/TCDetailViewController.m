@@ -7,7 +7,7 @@
 @import MapKit;
 @interface TCDetailViewController ()
 {
-    MKMapView *mapView;
+    MKMapView *cunlimapView;
     UIPopoverController *popOverController;
     
     NSDictionary* counties;
@@ -20,7 +20,7 @@
 @property (nonatomic,strong) NSMutableArray* polygonOfTowns;
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
-@property (strong, nonatomic) MKMapView *mapView;
+@property (strong, nonatomic) MKMapView *cunlimapView;
 @property (strong, nonatomic) UIPopoverController *popOverController;
 @property (strong, nonatomic) NSString *selectedCountyName;
 @property (strong, nonatomic) NSString *selectedTownName;
@@ -61,15 +61,15 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
     self.title = @"Map";
-    self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
-    mapView.mapType = MKMapTypeStandard;
-    mapView.scrollEnabled = YES;
-    mapView.zoomEnabled = YES;
-    mapView.delegate = self;
+    self.cunlimapView = [[MKMapView alloc] initWithFrame:self.view.frame];
+    cunlimapView.mapType = MKMapTypeStandard;
+    cunlimapView.scrollEnabled = YES;
+    cunlimapView.zoomEnabled = YES;
+    cunlimapView.delegate = self;
     
     self.polygonOfTowns = [[NSMutableArray alloc]init];
     [self _resetMapCenter];
-    [self.view addSubview:mapView];
+    [self.view addSubview:cunlimapView];
     [self _addToolbarToNavigationbar];
     [self readTownConunty];
 }
@@ -118,11 +118,11 @@
     //    lat = "0.4361032193958104";  lng = "121.0095478850263";
 
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake(25.040205, 121.512812);
-	mapView.region = MKCoordinateRegionMakeWithDistance(location, 1000 * 2, 1000 * 2);
-	mapView.centerCoordinate = location;
+	cunlimapView.region = MKCoordinateRegionMakeWithDistance(location, 1000 * 2, 1000 * 2);
+	cunlimapView.centerCoordinate = location;
     
     TCMapAnnotation *annotation = [[TCMapAnnotation alloc] initWithCoordinate:location title:@"testTitle" subtitle:@"testSubleTitle"];
-    [mapView addAnnotation:annotation];
+    [cunlimapView addAnnotation:annotation];
 }
 
 - (void)didReceiveMemoryWarning
@@ -255,7 +255,7 @@
         
         // assigning the index of array to polygon object - which can be helpful for next methods
         //        [polygon setTitle:[[dState valueForKey:@"id"] stringValue]];
-        [self.mapView addOverlay:polygon];
+        [self.cunlimapView addOverlay:polygon];
     }
     // add annotations on map after some delay
     [self performSelector:@selector(addAnnotationsOnMap) withObject:nil afterDelay:3];
@@ -283,7 +283,7 @@
 
 - (void)addAnnotationsOnMap {
     // foreach loop, which will access all polygons_overlay added over the mapView
-    for (MKPolygon *polyGon in self.mapView.overlays) {
+    for (MKPolygon *polyGon in self.cunlimapView.overlays) {
         // access the index - go to line number 102 to understand the index
         NSUInteger index = [[polyGon title] intValue];
         
@@ -306,7 +306,7 @@
         PlaceMark* from = [[PlaceMark alloc] initWithPlace:home];
         
         // add anotation to map
-        [self.mapView addAnnotation:from];
+        [self.cunlimapView addAnnotation:from];
     }
 }
 
@@ -411,7 +411,7 @@
 }
 
 
-@synthesize mapView;
+@synthesize cunlimapView;
 @synthesize popOverController;
 @synthesize locationButton;
 @end
