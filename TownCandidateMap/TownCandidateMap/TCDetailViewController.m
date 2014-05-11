@@ -206,12 +206,15 @@
     
     NSDictionary* layer = objects[@"layer1"];
     NSArray* geometries = layer[@"geometries"];
-    
-    //一層一層又一層層
     NSMutableArray *arOfPoints = [NSMutableArray array];
-    NSUInteger index = 0;
+    NSUInteger index = 0; //record how many nodes
     
     for (NSDictionary* geoObj in geometries) {
+#warning 打開這裡就可以知道加進去的node沒有順序性
+//        if (index == 5) {
+//            break;
+//        }
+        
         if ([NSNull null] == geoObj[@"type"] ) {
             continue;
         }
@@ -223,6 +226,7 @@
             //            NSLog(@"TW97 :%f,%f",X,Y);
             //            NSLog(@"WS794:%f,%f",[loaction[@"lat"] doubleValue],[loaction[@"lng"] doubleValue]);
             [arOfPoints addObject:loaction];
+            index++;
         }
     }
     

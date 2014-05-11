@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
-#import <CoreLocation/CoreLocation.h>
 #import "TCPickerViewController.h"
 
+@import MapKit;
+@import CoreLocation;
 @interface TCDetailViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate, UISplitViewControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, TCPickerViewControllerDelegate>
 
 @property (strong, nonatomic) id detailItem;
